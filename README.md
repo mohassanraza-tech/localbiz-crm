@@ -47,7 +47,18 @@ Server runs at `http://localhost:5000`
 | DELETE | `/api/leads/:id` | Delete lead | Yes |
 | POST | `/api/leads/:id/notes` | Add note | Yes |
 
-Protected routes need header: `Authorization: Bearer <token>`
+### Frontend Setup (Phase 3)
+
+```powershell
+cd client
+copy .env.example .env
+npm install
+npm run dev
+```
+
+Frontend runs at `http://localhost:5173`
+
+Make sure the backend is also running (`cd server` → `npm run dev`).
 
 ## Author
 
