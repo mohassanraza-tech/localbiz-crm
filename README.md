@@ -20,7 +20,34 @@ localbiz-crm/
 
 ## Getting Started
 
-> Setup instructions will be added as we build each phase.
+### Backend Setup (Phase 2)
+
+```powershell
+cd server
+copy .env.example .env
+# Edit .env with your MongoDB Atlas URI and JWT secret
+npm install
+npm run dev
+```
+
+Server runs at `http://localhost:5000`
+
+### API Endpoints
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/register` | Register user | No |
+| POST | `/api/auth/login` | Login, get JWT | No |
+| GET | `/api/auth/me` | Current user | Yes |
+| GET | `/api/leads` | List leads | Yes |
+| POST | `/api/leads` | Create lead | Yes |
+| GET | `/api/leads/stats` | Dashboard stats | Yes |
+| GET | `/api/leads/:id` | Get one lead | Yes |
+| PUT | `/api/leads/:id` | Update lead | Yes |
+| DELETE | `/api/leads/:id` | Delete lead | Yes |
+| POST | `/api/leads/:id/notes` | Add note | Yes |
+
+Protected routes need header: `Authorization: Bearer <token>`
 
 ## Author
 
