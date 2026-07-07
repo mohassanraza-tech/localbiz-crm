@@ -4,6 +4,9 @@ import api from '../api/axios';
 import Layout from '../components/Layout';
 import LeadCard from '../components/LeadCard';
 import LeadForm from '../components/LeadForm';
+import Alert from '../components/Alert';
+import LoadingSpinner from '../components/LoadingSpinner';
+import getErrorMessage from '../utils/getErrorMessage';
 
 const emptyForm = {
   name: '',
@@ -36,7 +39,7 @@ const Leads = () => {
       const { data } = await api.get('/leads', { params });
       setLeads(data.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load leads');
+      setError(getErrorMessage(err, 'Failed to load leads'));
     } finally {
       setLoading(false);
     }
@@ -65,7 +68,7 @@ const Leads = () => {
       setShowForm(false);
       fetchLeads();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create lead');
+      setError(getErrorMessage(err, 'Failed to create lead'));
     } finally {
       setSubmitting(false);
     }
@@ -86,9 +89,7 @@ const Leads = () => {
         </button>
       </div>
 
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>
-      )}
+      <Alert message={error} onClose={() => setError('')} />
 
       {showForm && (
         <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -125,9 +126,7 @@ const Leads = () => {
       </div>
 
       {loading ? (
-        <div className="flex h-48 items-center justify-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600" />
-        </div>
+        <LoadingSpinner label="Loading leads..." />
       ) : leads.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center">
           <p className="text-slate-500">No leads found. Try changing filters or add a new lead.</p>

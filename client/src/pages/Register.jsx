@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Alert from '../components/Alert';
+import getErrorMessage from '../utils/getErrorMessage';
 
 const Register = () => {
   const { register } = useAuth();
@@ -27,7 +29,7 @@ const Register = () => {
       await register(form);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(getErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -41,11 +43,7 @@ const Register = () => {
           <p className="mt-2 text-sm text-slate-500">Start managing leads for your business</p>
         </div>
 
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
+        <Alert message={error} onClose={() => setError('')} />
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

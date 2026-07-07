@@ -4,6 +4,9 @@ import api from '../api/axios';
 import Layout from '../components/Layout';
 import StatsCard from '../components/StatsCard';
 import LeadCard from '../components/LeadCard';
+import Alert from '../components/Alert';
+import LoadingSpinner from '../components/LoadingSpinner';
+import getErrorMessage from '../utils/getErrorMessage';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -22,7 +25,7 @@ const Dashboard = () => {
         setStats(statsRes.data.data);
         setRecentLeads(leadsRes.data.data.slice(0, 3));
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load dashboard');
+        setError(getErrorMessage(err, 'Failed to load dashboard'));
       } finally {
         setLoading(false);
       }
@@ -34,9 +37,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="flex h-64 items-center justify-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600" />
-        </div>
+        <LoadingSpinner label="Loading dashboard..." />
       </Layout>
     );
   }
@@ -56,9 +57,7 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>
-      )}
+      <Alert message={error} onClose={() => setError('')} />
 
       {stats && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

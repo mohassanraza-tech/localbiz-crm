@@ -3,7 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import Layout from '../components/Layout';
 import LeadForm from '../components/LeadForm';
+import Alert from '../components/Alert';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { statusStyles } from '../components/StatsCard';
+import getErrorMessage from '../utils/getErrorMessage';
 
 const LeadDetail = () => {
   const { id } = useParams();
@@ -32,7 +35,7 @@ const LeadDetail = () => {
         source: data.data.source,
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to load lead');
+      setError(getErrorMessage(err, 'Failed to load lead'));
     } finally {
       setLoading(false);
     }
@@ -55,7 +58,7 @@ const LeadDetail = () => {
       const { data } = await api.put(`/leads/${id}`, formData);
       setLead(data.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update lead');
+      setError(getErrorMessage(err, 'Failed to update lead'));
     } finally {
       setSaving(false);
     }
@@ -73,7 +76,7 @@ const LeadDetail = () => {
       setLead(data.data);
       setNoteText('');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add note');
+      setError(getErrorMessage(err, 'Failed to add note'));
     } finally {
       setAddingNote(false);
     }
@@ -86,16 +89,14 @@ const LeadDetail = () => {
       await api.delete(`/leads/${id}`);
       navigate('/leads');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete lead');
+      setError(getErrorMessage(err, 'Failed to delete lead'));
     }
   };
 
   if (loading) {
     return (
       <Layout>
-        <div className="flex h-64 items-center justify-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600" />
-        </div>
+        <LoadingSpinner label="Loading lead details..." />
       </Layout>
     );
   }
@@ -132,9 +133,7 @@ const LeadDetail = () => {
         </div>
       </div>
 
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>
-      )}
+      <Alert message={error} onClose={() => setError('')} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
