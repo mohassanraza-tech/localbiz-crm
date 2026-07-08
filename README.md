@@ -164,12 +164,25 @@ Protected routes require header: `Authorization: Bearer <token>`
 
 ## Screenshots
 
-_Add screenshots to a `docs/screenshots/` folder and link them here:_
+### Login
 
-- Login page
-- Dashboard with stats
-- Leads list with search
-- Lead detail with notes
+![Login](docs/screenshots/login-page.png)
+
+### Dashboard
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Leads
+
+![Leads](docs/screenshots/leads.png)
+
+### Lead Detail
+
+![Lead Detail](docs/screenshots/lead-detail.png)
+
+### Mobile View
+
+![Mobile](docs/screenshots/mobile-view.png)
 
 ## Author
 
